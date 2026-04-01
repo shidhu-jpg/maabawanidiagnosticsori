@@ -159,14 +159,44 @@ button{font-family:inherit;cursor:pointer;}
   box-shadow:0 2px 6px rgba(29,95,175,.1);}
 .cp.on{background:#1d5faf;color:#fff;}
 
-.tg{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 16px 16px;}
-.tc{background:#fff;border-radius:14px;padding:13px 9px;
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-  box-shadow:0 3px 10px rgba(29,95,175,.09);}
-.tc.ic{box-shadow:0 4px 14px rgba(29,95,175,.2),inset 0 0 0 2px #1d5faf;}
-.tb{width:100%;border:none;border-radius:8px;padding:7px 0;font-weight:700;font-size:11px;
-  background:linear-gradient(135deg,#c8201e,#a01816);color:#fff;}
-.tb.ad{background:#e8f3ff;color:#1d5faf;border:2px solid #1d5faf;}
+/* ── Test grid: fixed 3-col always ── */
+.tg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px 10px 16px;}
+
+/* ── Test card: horizontal layout — image left, content right ── */
+.tc{background:#fff;border-radius:14px;padding:8px;display:flex;flex-direction:row;
+  align-items:stretch;gap:7px;
+  box-shadow:0 3px 12px rgba(15,45,94,.13);border:1px solid #dde9f7;position:relative;overflow:hidden;}
+
+/* Image area — fixed width on left, stretches to card height */
+.tc .tc-img{border-radius:9px;overflow:hidden;width:56px;flex-shrink:0;align-self:stretch;
+  background:#f3f8ff;display:flex;align-items:center;justify-content:center;padding:5px;min-height:72px;}
+.tc .tc-img img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;}
+
+/* Right column — holds body + footer, fills remaining width */
+.tc .tc-right{flex:1;min-width:0;display:flex;flex-direction:column;}
+
+/* Content body — grows to push footer down */
+.tc .tc-body{flex:1;display:flex;flex-direction:column;gap:2px;padding:2px 0 3px;}
+.tc .tc-name{font-size:11px;font-weight:800;color:#1d5faf;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;word-break:break-word;}
+.tc .tc-price{font-size:10px;font-weight:700;color:#c8201e;}
+
+/* Footer — always pinned to bottom of right column, badge left-aligned */
+.tc .tc-footer{margin-top:auto;padding-top:4px;}
+
+/* Selected state */
+.tc.ic{border:2px solid #1d5faf;box-shadow:0 4px 14px rgba(29,95,175,.2),inset 0 0 0 2px #1d5faf;}
+
+/* Placeholder (no image uploaded) */
+.tc .tc-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.tc .tc-img-placeholder span{font-size:26px;}
+
+/* Price badge button — inline, left-aligned */
+.tb{display:inline-block;border:none;border-radius:6px;padding:4px 9px;font-weight:800;font-size:10px;
+  background:linear-gradient(135deg,#1d5faf,#0f2d5e);color:#fff;cursor:pointer;letter-spacing:.2px;
+  font-family:inherit;white-space:nowrap;}
+.tb.ad{background:linear-gradient(135deg,#1d8a4e,#0d5c30);color:#fff;}
 
 .cbar{position:sticky;bottom:0;background:#fff;padding:13px 16px;
   border-top:2px solid #c5d9f5;box-shadow:0 -3px 16px rgba(15,45,94,.1);}
@@ -511,15 +541,20 @@ button{font-family:inherit;cursor:pointer;}
     <button class="at" id="tdr" onclick="aTab('d')">👨‍⚕️ Manage Doctors</button>
   </div>
   <div class="ab" id="apanelT">
-    <div class="ac"><div class="act">➕ Add New Test</div>
-      <input class="fi" id="ntname" placeholder="Test Name" style="margin-bottom:9px"/>
+    <div class="ac"><div class="act" id="formTitle">➕ Add New Test</div>
+      <div class="ar">
+        <input class="fi" id="ntname" placeholder="Test Name" style="flex:1"/>
+        <button class="iab" id="addTestButton" onclick="addTest()">Save</button>
+        <button class="iab" id="cancelEditBtn" style="display:none;background:#f0f6ff;color:#4a1a8e;margin-left:8px" onclick="cancelEdit()">✖ Cancel</button>
+      </div>
       <div class="g2" style="margin-bottom:9px">
-        <input class="fi" id="ntprice" placeholder="Price (₹)" inputmode="numeric"
-          oninput="this.value=this.value.replace(/\D/g,'')"/>
+        <input class="fi" id="ntprice" placeholder="Price (₹)" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')"/>
         <select class="fi" id="ntcat">
-          <option>Blood Tests</option><option>X-Ray / Imaging</option><option>Home Collection</option>
+          <option>Blood Tests</option><option>X-Ray</option><option>Home Collection</option>
         </select>
       </div>
+      <div class="fl" style="margin-bottom:9px"><label>Image (optional)</label><input class="fi" id="ntimg" type="file" accept="image/*" onchange="handleTestImage(event)"/></div>
+      <div class="fl" style="display:none;margin-bottom:9px" id="ntimgPreviewWrap"><label>Preview</label><img id="ntimgPreview" style="width:100%;height:130px;border-radius:9px;object-fit:cover;border:1px solid #c5d9f5"/></div>
       <div style="font-size:11px;font-weight:700;color:#4a1a8e;margin-bottom:7px">Icon:</div>
       <div class="ig" id="igEl"></div>
       <button class="addb" onclick="addTest()">➕ Add Test</button>
@@ -548,19 +583,90 @@ button{font-family:inherit;cursor:pointer;}
 const WA="918677828555",AP="mahesh@26";
 const ICONS=["🧪","🩸","💊","🫀","🔬","🏥","🫁","🦷","🦴","🏠","💉","🧬","❤️","🧠","🩺"];
 let tests=[
-  {id:1,name:"CBC (Complete Blood Count)",price:500,icon:"🧪",cat:"Blood Tests"},
-  {id:2,name:"Blood Glucose (Sugar Test)",price:500,icon:"🩸",cat:"Blood Tests"},
-  {id:3,name:"Lipid Profile",price:500,icon:"💊",cat:"Blood Tests"},
-  {id:4,name:"LFT & KFT (Liver & Kidney)",price:1000,icon:"🫀",cat:"Blood Tests"},
-  {id:5,name:"Urine Routine & Microscopy",price:1000,icon:"🔬",cat:"Blood Tests"},
-  {id:6,name:"Thyroid Profile (T3,T4,TSH)",price:2000,icon:"🏥",cat:"Blood Tests"},
-  {id:7,name:"Digital X-Ray (Chest)",price:300,icon:"🫁",cat:"X-Ray / Imaging"},
-  {id:8,name:"OPG (Dental X-Ray)",price:500,icon:"🦷",cat:"X-Ray / Imaging"},
-  {id:9,name:"X-Ray (Spine/Lumbar)",price:400,icon:"🦴",cat:"X-Ray / Imaging"},
-  {id:10,name:"Home Sample Collection",price:100,icon:"🏠",cat:"Home Collection"},
+  {id:10,name:"Home Sample Collection",price:100,icon:"🏠",cat:"Home Collection",img:"images/homedeliverimage.jpeg"},
+  // ── BLOOD TESTS ──────────────────────────────────────────────
+{id:11, name:"Complete Blood Count (CBC)", price:300, icon:"🧪", cat:"Blood Tests", img:"images/cbc.jpeg"},
+{id:12, name:"TLC DLC", price:150, icon:"🧫", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:13, name:"Platelets Count", price:150, icon:"🩸", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:14, name:"Haemoglobin (HB%)", price:100, icon:"🩸", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:15, name:"ESR", price:100, icon:"🧪", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:16, name:"BT & CT", price:200, icon:"🧪", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:17, name:"ABO Blood Grouping", price:100, icon:"🅰️", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:18, name:"Rh Typing", price:100, icon:"🅱️", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:19, name:"M.T (Mantoux)", price:100, icon:"💉", cat:"Blood Tests", img:"images/mt.jpeg"},
+{id:20, name:"VDRL", price:100, icon:"🔬", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+{id:21, name:"Widal Test", price:200, icon:"🔬", cat:"Blood Tests", img:"images/Stool.jpeg"},
+{id:22, name:"Stool Routine", price:200, icon:"🔬", cat:"Blood Tests", img:"images/Stool.jpeg"},
+{id:23, name:"Stool Occult Blood", price:100, icon:"🔬", cat:"Blood Tests", img:"images/Stool.jpeg"},
+{id:24, name:"Semen Test", price:400, icon:"🔬", cat:"Blood Tests", img:"images/Stool.jpeg"},
+{id:25, name:"Urine Routine", price:100, icon:"🔬", cat:"Blood Tests", img:"images/urine.jpeg"},
+{id:26, name:"Urine Sugar", price:50, icon:"🔬", cat:"Blood Tests", img:"images/urine.jpeg"},
+{id:27, name:"Urine Albumin", price:50, icon:"🔬", cat:"Blood Tests", img:"images/urine.jpeg"},
+{id:28, name:"Urine for Bile Product", price:50, icon:"🔬", cat:"Blood Tests", img:"images/urine.jpeg"},
+{id:29, name:"Culture & Sensitivity Test", price:550, icon:"🧫", cat:"Blood Tests", img:"images/Stool.jpeg"},
+{id:30, name:"Pregnancy Test", price:200, icon:"🤰", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+
+// ── INFECTION / SEROLOGY ─────────────────────────────────────
+{id:31, name:"HbsAg (Hepatitis B)", price:200, icon:"🦠", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+{id:32, name:"HIV I & II", price:300, icon:"🦠", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+{id:33, name:"HCV (Hepatitis C)", price:300, icon:"🦠", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+{id:34, name:"Rapid Typhoid (IgG+IgM)", price:300, icon:"🦠", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+{id:35, name:"Rapid Malaria", price:300, icon:"🦟", cat:"Blood Tests", img:"images/malaria.jpeg"},
+{id:36, name:"Rapid Kala-Azar", price:400, icon:"🦠", cat:"Blood Tests", img:"images/malaria.jpeg"},
+{id:37, name:"Rapid Filaria", price:600, icon:"🦠", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+{id:38, name:"Rapid TB (IgG+IgM)", price:800, icon:"🫁", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+{id:39, name:"Rapid Dengue (IgG+IgM)", price:1000, icon:"🦟", cat:"Blood Tests", img:"images/malaria.jpeg"},
+{id:40, name:"TROP-T", price:1100, icon:"🫀", cat:"Blood Tests", img:"images/trophic.jpeg"},
+{id:41, name:"TROP-I", price:1100, icon:"🫀", cat:"Blood Tests", img:"images/kitimage.jpeg"},
+
+// ── BIOCHEMISTRY ─────────────────────────────────────────────
+{id:42, name:"Blood Sugar Fasting", price:60, icon:"🍬", cat:"Blood Tests", img:"images/icon22.jpeg"},
+{id:43, name:"Blood Sugar PP", price:60, icon:"🍬", cat:"Blood Tests", img:"images/icon22.jpeg"},
+{id:44, name:"Blood Sugar Random", price:60, icon:"🍬", cat:"Blood Tests", img:"images/icon22.jpeg"},
+{id:45, name:"Blood Urea", price:200, icon:"🧪", cat:"Blood Tests", img:"images/Kidney.jpeg"},
+{id:46, name:"BUN", price:200, icon:"🧪", cat:"Blood Tests", img:"images/Kidney.jpeg"},
+{id:47, name:"Serum Uric Acid", price:200, icon:"🧪", cat:"Blood Tests", img:"images/Kidney.jpeg"},
+{id:48, name:"Serum Creatinine", price:200, icon:"🧪", cat:"Blood Tests", img:"images/Kidney.jpeg"},
+{id:49, name:"Serum Calcium", price:200, icon:"🧪", cat:"Blood Tests", img:"images/Kidney.jpeg"},
+{id:50, name:"SGPT", price:200, icon:"🫀", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:51, name:"SGOT", price:200, icon:"🫀", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:52, name:"Bilirubin", price:200, icon:"🫀", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:53, name:"Alkaline Phosphatase", price:200, icon:"🧪", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:54, name:"Total Protein", price:200, icon:"🧪", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:55, name:"Serum Albumin", price:200, icon:"🧪", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:56, name:"Serum Globulin", price:200, icon:"🧪", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:57, name:"GGT", price:200, icon:"🧪", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:58, name:"Total Cholesterol", price:200, icon:"💊", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:59, name:"HDL Cholesterol", price:200, icon:"💊", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:60, name:"Triglycerides (TG)", price:200, icon:"💊", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:61, name:"EGFR", price:250, icon:"🫀", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:62, name:"CRP", price:300, icon:"🧪", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:63, name:"RA Factor", price:400, icon:"🦴", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:64, name:"ASO Titer", price:500, icon:"🧪", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:65, name:"Electrolytes", price:500, icon:"⚡", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:66, name:"Amylase", price:500, icon:"🧪", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:67, name:"HbA1c", price:600, icon:"🍬", cat:"Blood Tests", img:"images/hb1c.jpeg"},
+{id:68, name:"Lipid Profile", price:600, icon:"💊", cat:"Blood Tests", img:"images/lipidprofile.jpeg"},
+{id:69, name:"KFT (Kidney Function Test)", price:600, icon:"🫘", cat:"Blood Tests", img:"images/Kidney.jpeg"},
+{id:70, name:"KFT with Electrolytes", price:1100, icon:"🫘", cat:"Blood Tests", img:"images/Kidney.jpeg"},
+{id:71, name:"LFT (Liver Function Test)", price:800, icon:"🫀", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:72, name:"LFT with GGT", price:1000, icon:"🫀", cat:"Blood Tests", img:"images/liver.jpeg"},
+{id:73, name:"IgE", price:800, icon:"🧪", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+{id:74, name:"Lipase", price:800, icon:"🧪", cat:"Blood Tests", img:"images/home-collection.jpeg"},
+
+// ── X-RAY / IMAGING ──────────────────────────────────────────
+{id:75, name:"Digital X-Ray (All Types)", price:300, icon:"🫁", cat:"X-Ray", img:"images/chestxray.jpeg"},
+{id:76, name:"Chest X-Ray", price:300, icon:"🫁",cat:"X-Ray", img:"images/chestxray.jpeg"},
+{id:77, name:"L.S. Spine X-Ray", price:400, icon:"🦴", cat:"X-Ray", img:"images/lsspine.jpeg"},
+{id:78, name:"D.L. Spine X-Ray", price:400, icon:"🦴", cat:"X-Ray", img:"images/dlspine.jpeg"},
+{id:79, name:"Cervical X-Ray", price:400, icon:"🦴", cat:"X-Ray", img:"images/cervical.jpeg"},
+{id:80, name:"Dental X-Ray", price:130, icon:"🦷", cat:"X-Ray", img:"images/dental.jpeg"},
+{id:81, name:"OPG X-Ray", price:500, icon:"🦷", cat:"X-Ray", img:"images/opg.jpeg"},
+
 ];
 let doctors=["Dr. Ramesh Sharma","Dr. Priya Singh","Dr. Anil Kumar","Dr. Sunita Devi","Dr. Mohit Gupta"];
 let cart=[],cat="All",refT="self",selDoc="",payM="upi",selIco="🧪";
+let editingTestId=null,testImageData="";
 let tapCnt=0,tapTmr=null,loggedIn=false,curPg="h";
 
 function showPg(p){
@@ -596,11 +702,20 @@ function renderTests(){
   if(!f.length){g.innerHTML="";nr.style.display="block";return;}
   nr.style.display="none";
   g.innerHTML=f.map(t=>{const ic=cart.some(c=>c.id===t.id);
-    return`<div class="tc ${ic?'ic':''}">
-      <div style="font-size:32px">${t.icon}</div>
-      <div style="font-size:11px;font-weight:700;color:#0f2d5e;line-height:1.35;text-align:center">${t.name}</div>
-      <div style="color:#c8201e;font-weight:800;font-size:14px">₹${t.price.toLocaleString()}</div>
-      <button class="tb ${ic?'ad':''}" onclick="tog(${t.id})">${ic?"✓ Added":"Book Now →"}</button>
+    return `<div class="tc ${ic?'ic':''}">
+      <div class="tc-img">${t.img
+        ?`<img src="${t.img}" alt="${t.name}"/>`
+        :`<div class="tc-img-placeholder" aria-label="${t.name}"><span>${t.icon}</span></div>`}
+      </div>
+      <div class="tc-right">
+        <div class="tc-body">
+          <div class="tc-name">${t.name}</div>
+          <div class="tc-price">₹${t.price.toLocaleString()}</div>
+        </div>
+        <div class="tc-footer">
+          <button class="tb ${ic?'ad':''}" onclick="tog(${t.id})">${ic?"✓ Added":"₹"+t.price.toLocaleString()}</button>
+        </div>
+      </div>
     </div>`;}).join("");
   updCart();
 }
@@ -708,17 +823,79 @@ function aTab(t){document.getElementById("tst").classList.toggle("on",t==="t");
 function renderIG(){document.getElementById("igEl").innerHTML=ICONS.map(i=>
   `<button class="ib ${i===selIco?'on':''}" onclick="pickI('${i}')">${i}</button>`).join("");}
 function pickI(i){selIco=i;renderIG();}
-function addTest(){const n=document.getElementById("ntname").value.trim(),
-  p=parseInt(document.getElementById("ntprice").value),c=document.getElementById("ntcat").value;
-  if(!n||isNaN(p))return;tests.push({id:Date.now(),name:n,price:p,icon:selIco,cat:c});
-  document.getElementById("ntname").value="";document.getElementById("ntprice").value="";
-  renderAT();toast("✅ Test added!");}
+function handleTestImage(event){
+  const file=event.target.files[0];
+  if(!file){testImageData="";document.getElementById("ntimgPreviewWrap").style.display="none";return;}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    testImageData=e.target.result;
+    const p=document.getElementById("ntimgPreview");
+    p.src=testImageData;
+    document.getElementById("ntimgPreviewWrap").style.display="block";
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetTestForm(){
+  editingTestId=null;testImageData="";
+  document.getElementById("formTitle").textContent="➕ Add New Test";
+  document.getElementById("addTestButton").textContent="Save";
+  document.getElementById("cancelEditBtn").style.display="none";
+  document.getElementById("ntname").value="";
+  document.getElementById("ntprice").value="";
+  document.getElementById("ntcat").value="Blood Tests";
+  document.getElementById("ntimg").value="";
+  document.getElementById("ntimgPreviewWrap").style.display="none";
+  selIco="🧪";renderIG();
+}
+
+function startEditTest(id){
+  const t=tests.find(it=>it.id===id); if(!t)return;
+  editingTestId=id;
+  document.getElementById("formTitle").textContent="✏️ Edit Test";
+  document.getElementById("addTestButton").textContent="Update";
+  document.getElementById("cancelEditBtn").style.display="inline-flex";
+  document.getElementById("ntname").value=t.name;
+  document.getElementById("ntprice").value=t.price;
+  document.getElementById("ntcat").value=t.cat;
+  selIco=t.icon;renderIG();
+  testImageData=t.img||"";
+  if(testImageData){document.getElementById("ntimgPreview").src=testImageData;
+    document.getElementById("ntimgPreviewWrap").style.display="block";} else {
+    document.getElementById("ntimgPreviewWrap").style.display="none";
+  }
+}
+
+function cancelEdit(){resetTestForm();}
+
+function addTest(){
+  const n=document.getElementById("ntname").value.trim();
+  const p=parseInt(document.getElementById("ntprice").value,10);
+  const c=document.getElementById("ntcat").value;
+  if(!n||isNaN(p))return;
+  if(editingTestId){
+    const t=tests.find(it=>it.id===editingTestId);
+    if(!t)return;
+    t.name=n; t.price=p; t.cat=c; t.icon=selIco; t.img=testImageData;
+    toast("✅ Test updated!");
+  } else {
+    tests.push({id:Date.now(),name:n,price:p,icon:selIco,cat:c,img:testImageData});
+    toast("✅ Test added!");
+  }
+  resetTestForm();
+  renderAT();
+}
+
 function remT(id){tests=tests.filter(t=>t.id!==id);renderAT();toast("🗑️ Removed!");}
+
 function renderAT(){document.getElementById("tlEl").innerHTML=tests.map(t=>
   `<div class="ai"><span style="font-size:24px;flex-shrink:0">${t.icon}</span>
     <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;color:#0f2d5e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.name}</div>
-      <div style="font-size:10px;color:#888">${t.cat} · ₹${t.price}</div></div>
-    <button class="db" onclick="remT(${t.id})">🗑️</button></div>`).join("");}
+      <div style="font-size:10px;color:#888">${t.cat} · ₹${t.price}</div>
+      ${t.img?`<img src="${t.img}" style="width:100%;max-height:80px;object-fit:cover;border-radius:7px;margin-top:6px;border:1px solid #c5d9f5"/>`:''}
+    </div>
+    <div style="display:flex;gap:4px;align-items:center"><button class="iab" style="padding:4px 8px;font-size:11px" onclick="startEditTest(${t.id})">✏️</button>
+    <button class="db" onclick="remT(${t.id})">🗑️</button></div></div>`).join("");}
 function addDoc(){const n=document.getElementById("ndname").value.trim();if(!n)return;
   doctors.push(n);document.getElementById("ndname").value="";renderAD();toast("✅ Doctor added!");}
 function remDoc(i){doctors.splice(i,1);renderAD();toast("🗑️ Removed!");}
