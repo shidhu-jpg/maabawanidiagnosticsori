@@ -798,11 +798,13 @@ function placeOrder(){
   const ref=refT==="self"?"Self":selDoc;
   const tot=cart.reduce((s,t)=>s+t.price,0),bid="MBD"+Date.now().toString().slice(-6);
   const tl=cart.map(t=>`${t.icon} ${t.name} - ₹${t.price}`).join("\n");
-  const msg=`🏥 *Maa Bhawani Diagnostics*\n*Booking #${bid}*\n\n`+
-    `👤 *Patient:* ${n}\n📞 *Phone:* +91${ph}\n🎂 *Age:* ${age} | *Gender:* ${gen}\n`+
-    `📍 *Address:* ${addr}\n📅 *Date:* ${date} | ⏰ *Time:* ${time}\n`+
-    `👨‍⚕️ *Ref By:* ${ref}\n💳 *Payment:* ${payM==="upi"?"UPI":"Cash on Delivery"}\n\n`+
-    `🧪 *Tests:*\n${tl}\n\n💰 *Total: ₹${tot.toLocaleString()}*\n\n_Our team will contact you shortly._`;
+  const msg=`🏥 Maa Bhawani Diagnostics\nBooking #${bid}\n\n`+
+    `🧪 Tests:\n${tl}\n\n`+
+    `💰 Total: ₹${tot.toLocaleString()}\n\n`+
+    `👤 Patient: ${n}\n📞 Phone: +91${ph}\n🎂 Age: ${age} | Gender: ${gen}\n`+
+    `📍 Address: ${addr}\n📅 Date: ${date} | ⏰ Time: ${time}\n`+
+    `👨‍⚕️ Ref By: ${ref}\n💳 Payment: ${payM==="upi"?"UPI":"Cash on Delivery"}\n`+
+    `Our team will contact you shortly.`;
   window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank");
   document.getElementById("bidVal").textContent="#"+bid;showFP("psu");}
 function goHome(){cart=[];showPg(curPg);}
