@@ -798,12 +798,13 @@ function placeOrder(){
   const ref=refT==="self"?"Self":selDoc;
   const tot=cart.reduce((s,t)=>s+t.price,0),bid="MBD"+Date.now().toString().slice(-6);
   const tl=cart.map(t=>`${t.icon} ${t.name} - ₹${t.price}`).join("\n");
-  const msg=`🏥 Maa Bhawani Diagnostics\nBooking #${bid}\n\n`+
-    `🧪 Tests:\n${tl}\n\n`+
-    `💰 Total: ₹${tot.toLocaleString()}\n\n`+
-    `👤 Patient: ${n}\n📞 Phone: +91${ph}\n🎂 Age: ${age} | Gender: ${gen}\n`+
-    `📍 Address: ${addr}\n📅 Date: ${date} | ⏰ Time: ${time}\n`+
-    `👨‍⚕️ Ref By: ${ref}\n💳 Payment: ${payM==="upi"?"UPI":"Cash on Delivery"}\n`+
+  const E={hosp:"\uD83C\uDFE5",test:"\uD83E\uDDEA",money:"\uD83D\uDCB0",person:"\uD83D\uDC64",phone:"\uD83D\uDCDE",cake:"\uD83C\uDF82",pin:"\uD83D\uDCCD",cal:"\uD83D\uDCC5",clock:"\u23F0",doc:"\uD83D\uDC68\u200D\u2695\uFE0F",card:"\uD83D\uDCB3"};
+  const msg=`${E.hosp} Maa Bhawani Diagnostics\nBooking #${bid}\n\n`+
+    `${E.test} Tests:\n${tl}\n\n`+
+    `${E.money} Total: \u20B9${tot.toLocaleString()}\n\n`+
+    `${E.person} Patient: ${n}\n${E.phone} Phone: +91${ph}\n${E.cake} Age: ${age} | Gender: ${gen}\n`+
+    `${E.pin} Address: ${addr}\n${E.cal} Date: ${date} | ${E.clock} Time: ${time}\n`+
+    `${E.doc} Ref By: ${ref}\n${E.card} Payment: ${payM==="upi"?"UPI":"Cash on Delivery"}\n`+
     `Our team will contact you shortly.`;
   window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank");
   document.getElementById("bidVal").textContent="#"+bid;showFP("psu");}
