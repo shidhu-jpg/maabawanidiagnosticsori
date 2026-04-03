@@ -797,8 +797,8 @@ function placeOrder(){
     time=document.getElementById("itime").value;
   const ref=refT==="self"?"Self":selDoc;
   const tot=cart.reduce((s,t)=>s+t.price,0),bid="MBD"+Date.now().toString().slice(-6);
-  const tl=cart.map(t=>`${String.fromCodePoint(0x1F9EA)} ${t.name} - \u20B9${t.price}`).join("\n");
-  const E={hosp:String.fromCodePoint(0x1F3E5),test:String.fromCodePoint(0x1F9EA),money:String.fromCodePoint(0x1F4B0),person:String.fromCodePoint(0x1F464),phone:String.fromCodePoint(0x1F4DE),cake:String.fromCodePoint(0x1F382),pin:String.fromCodePoint(0x1F4CD),cal:String.fromCodePoint(0x1F4C5),clock:String.fromCodePoint(0x23F0),doc:String.fromCodePoint(0x1F468)+"\u200D"+String.fromCodePoint(0x2695)+"\uFE0F",card:String.fromCodePoint(0x1F4B3)};
+  const tl=cart.map(t=>`🧪 ${t.name} - ₹${t.price}`).join("\n");
+  const E={hosp:"🏥",test:"🧪",money:"💰",person:"👤",phone:"📞",cake:"🎂",pin:"📍",cal:"📅",clock:"⏰",doc:"👨‍⚕️",card:"💳"};
   const msg=`${E.hosp} Maa Bhawani Diagnostics\nBooking #${bid}\n\n`+
     `${E.test} Tests:\n${tl}\n\n`+
     `${E.money} Total: \u20B9${tot.toLocaleString()}\n\n`+
