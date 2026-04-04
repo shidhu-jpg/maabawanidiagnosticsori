@@ -159,8 +159,8 @@ button{font-family:inherit;cursor:pointer;}
   box-shadow:0 2px 6px rgba(29,95,175,.1);}
 .cp.on{background:#1d5faf;color:#fff;}
 
-/* ── Test grid: fixed 3-col always ── */
-.tg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px 10px 16px;}
+/* ── Test grid: 2-col on mobile for readable names ── */
+.tg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px 10px 16px;}
 
 /* ── Test card: horizontal layout — image left, content right ── */
 .tc{background:#fff;border-radius:14px;padding:8px;display:flex;flex-direction:row;
@@ -178,7 +178,7 @@ button{font-family:inherit;cursor:pointer;}
 /* Content body — grows to push footer down */
 .tc .tc-body{flex:1;display:flex;flex-direction:column;gap:2px;padding:2px 0 3px;}
 .tc .tc-name{font-size:11px;font-weight:800;color:#1d5faf;line-height:1.3;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
   overflow:hidden;word-break:break-word;}
 .tc .tc-price{font-size:10px;font-weight:700;color:#c8201e;}
 
