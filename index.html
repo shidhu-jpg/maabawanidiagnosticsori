@@ -797,15 +797,18 @@ function placeOrder(){
     time=document.getElementById("itime").value;
   const ref=refT==="self"?"Self":selDoc;
   const tot=cart.reduce((s,t)=>s+t.price,0),bid="MBD"+Date.now().toString().slice(-6);
-  const tl=cart.map(t=>`🧪 ${t.name} - ₹${t.price}`).join("\n");
-  const E={hosp:"🏥",test:"🧪",money:"💰",person:"👤",phone:"📞",cake:"🎂",pin:"📍",cal:"📅",clock:"⏰",doc:"👨‍⚕️",card:"💳"};
-  const msg=`${E.hosp} Maa Bhawani Diagnostics\nBooking #${bid}\n\n`+
-    `${E.test} Tests:\n${tl}\n\n`+
-    `${E.money} Total: \u20B9${tot.toLocaleString()}\n\n`+
-    `${E.person} Patient: ${n}\n${E.phone} Phone: +91${ph}\n${E.cake} Age: ${age} | Gender: ${gen}\n`+
-    `${E.pin} Address: ${addr}\n${E.cal} Date: ${date} | ${E.clock} Time: ${time}\n`+
-    `${E.doc} Ref By: ${ref}\n${E.card} Payment: ${payM==="upi"?"UPI":"Cash on Delivery"}\n`+
-    `Our team will contact you shortly.`;
+  const tl=cart.map(t=>`  \u2022 *${t.name}* \u2014 \u20B9${t.price}`).join("\n");
+  const sep="\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501";
+  const msg=`*MAA BHAWANI DIAGNOSTICS*\n*NEW BOOKING ORDER*\n${sep}\n`+
+    `*Booking ID:* #${bid}\n${sep}\n`+
+    `*Tests Selected:*\n${tl}\n`+
+    `*Total Amount:* *\u20B9${tot.toLocaleString()}*\n`+
+    `*Payment:* ${payM==="upi"?"UPI":"Cash on Delivery"}\n${sep}\n`+
+    `*Name:* ${n}\n*Mobile:* *+91${ph}*\n`+
+    `*Age:* ${age} yrs | *Gender:* ${gen}\n`+
+    `*Address:* ${addr}\n*Date:* ${date}\n*Time:* ${time}\n`+
+    `*Ref By:* ${ref}\n${sep}\n`+
+    `Our team will contact you shortly.\n+91 8677828555`;
   window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank");
   document.getElementById("bidVal").textContent="#"+bid;showFP("psu");}
 function goHome(){cart=[];showPg(curPg);}
