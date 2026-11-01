@@ -780,6 +780,29 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.25;letter-spac
 .centre-gal .cg-tall img{aspect-ratio:4/3;object-position:center 45%;}
 .centre-gal figcaption{padding:8px 10px;font-size:12.5px;font-weight:700;color:var(--ink-h);}
 @media (min-width:900px){.centre-gal{grid-template-columns:repeat(5,1fr);}.centre-gal .cg-tall{grid-column:auto;}.centre-gal img,.centre-gal .cg-tall img{aspect-ratio:3/4;}}
+.h-hc-img{aspect-ratio:4/3;object-position:center 22%;}
+.h-promo{margin-top:22px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(12,36,80,.1);display:flex;flex-direction:column;}
+.h-promo-img img{width:100%;display:block;aspect-ratio:1/1;}
+.h-promo-copy{padding:18px;}
+.h-promo-copy h2{font-size:26px;font-weight:800;color:var(--ink-h);line-height:1.15;margin-top:10px;}
+.h-promo-copy h2 span{color:#16a34a;display:block;}
+.h-promo-copy p{font-size:13.5px;color:#2d3b57;margin-top:8px;}
+.h-promo-copy ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:7px;}
+.h-promo-copy li{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-h);}
+.h-promo-copy li .msi{color:#16a34a;width:18px;height:18px;}
+.h-promo-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.h-promo-acts a{display:inline-flex;align-items:center;gap:6px;padding:11px 16px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;}
+.h-promo-acts .c-wa{background:#16a34a;color:#fff;}
+.h-promo-acts .c-call{background:var(--brand);color:#fff;}
+@media (min-width:900px){
+  .h-hc-img{aspect-ratio:auto;object-position:center 20%;}
+  .h-promo{flex-direction:row;align-items:center;}
+  .h-promo-img{width:46%;flex-shrink:0;}
+  .h-promo-copy{padding:30px 36px;}
+  .h-promo-copy h2{font-size:38px;}
+  .h-promo-copy p{font-size:15px;}
+  .h-promo-copy li{font-size:14.5px;}
+}
 </style>
 </head>
 <body>
@@ -832,7 +855,7 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.25;letter-spac
 
   <section class="h-sec">
     <div class="h-hc">
-      <img class="h-hc-img" src="images/home/home-collection.jpeg" alt="Maa Bhawani staff member delivering a sample collection kit"/>
+      <img class="h-hc-img" src="images/real/sample-collection-boy.jpg" alt="Maa Bhawani Diagnostics sample collection staff with collection bag"/>
       <div class="h-hc-copy">
         <h2>Home<span>Sample Collection</span></h2>
         <p>Book your test online and get home sample collection for all tests.</p>
@@ -845,6 +868,27 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.25;letter-spac
       <div class="h-hc-cta">
         <div class="h-hc-badge"><span class="ic"><span class="msi">home</span><b><span class="msi">check</span></b></span>Same Quality Care<br/>at Your Home</div>
         <button class="h-btn-red" onclick="openBookingCat('Home Collection')">Book a Home Sample<span class="msi msi-sm">arrow_forward</span></button>
+      </div>
+    </div>
+
+    <div class="h-promo" id="free-home-collection">
+      <a class="h-promo-img" href="https://wa.me/918677828555?text=Hi%2C%20I%20want%20to%20book%20a%20FREE%20home%20sample%20collection." target="_blank" rel="noopener">
+        <img src="images/real/free-home-collection.jpg" alt="Free home sample collection for all checkups - Maa Bhawani Diagnostics, call or WhatsApp 86778 28555" loading="lazy"/>
+      </a>
+      <div class="h-promo-copy">
+        <span class="h-tag"><span class="msi">home</span>Special Offer</span>
+        <h2>FREE Home Sample<span>Collection</span></h2>
+        <p>Sabhi checkups ke liye ghar se sample collection bilkul free. Same quality tests, ab aapke ghar par.</p>
+        <ul>
+          <li><span class="msi">check</span>All Blood Tests &amp; Full Body Checkups</li>
+          <li><span class="msi">check</span>Diabetes, Thyroid, Cholesterol Tests</li>
+          <li><span class="msi">check</span>Senior Citizen &amp; Women Health Checkups</li>
+          <li><span class="msi">check</span>Family &amp; Corporate Packages</li>
+        </ul>
+        <div class="h-promo-acts">
+          <a class="c-wa" href="https://wa.me/918677828555?text=Hi%2C%20I%20want%20to%20book%20a%20FREE%20home%20sample%20collection." target="_blank" rel="noopener"><span class="msi msi-sm">chat_bubble</span>Book on WhatsApp</a>
+          <a class="c-call" href="tel:8677828555"><span class="msi msi-sm">call</span>86778 28555</a>
+        </div>
       </div>
     </div>
 
