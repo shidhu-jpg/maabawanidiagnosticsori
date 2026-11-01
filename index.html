@@ -773,6 +773,13 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.25;letter-spac
   .site-footer>.ft-inner{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:28px;}
   .ft-bottom{margin-top:20px;}
 }
+.centre-gal{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.centre-gal figure{margin:0;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(12,36,80,.1);}
+.centre-gal img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+.centre-gal .cg-tall{grid-column:1/-1;}
+.centre-gal .cg-tall img{aspect-ratio:4/3;object-position:center 45%;}
+.centre-gal figcaption{padding:8px 10px;font-size:12.5px;font-weight:700;color:var(--ink-h);}
+@media (min-width:900px){.centre-gal{grid-template-columns:repeat(5,1fr);}.centre-gal .cg-tall{grid-column:auto;}.centre-gal img,.centre-gal .cg-tall img{aspect-ratio:3/4;}}
 </style>
 </head>
 <body>
@@ -795,7 +802,7 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.25;letter-spac
         </div>
       </div>
       <div class="h-hero-media">
-        <img src="images/home/hero-lab.jpeg" alt="Lab technician examining a sample under a microscope"/>
+        <img src="images/real/hero-home.jpg" alt="Blood sample collection area at Maa Bhawani Diagnostics, Areraj"/>
       </div>
     </div>
   </section>
@@ -865,7 +872,7 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.25;letter-spac
         <p>At Maa Bhawani Diagnostics, we are committed to providing accurate, reliable and affordable diagnostic services to the people of Areraj and nearby areas. Your health and well-being are always our priority.</p>
         <button class="h-btn-navy" onclick="showPg('a')">Know More About Us<span class="msi msi-sm">arrow_forward</span></button>
       </div>
-      <img class="h-why-img" src="images/home/storefront.jpeg" alt="Maa Bhawani Diagnostics centre"/>
+      <img class="h-why-img" src="images/real/storefront-wide.jpg" alt="Maa Bhawani Diagnostics centre building, Mandir Road, Areraj"/>
       <div class="h-why-list">
         <div><span class="msi">science</span>Modern Laboratory Equipment</div>
         <div><span class="msi">groups</span>Trained &amp; Experienced Staff</div>
@@ -965,7 +972,18 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.25;letter-spac
   </section>
 
   <section class="sect">
-    <h2>Our Certifications</h2>
+<h2>Our Centre</h2>
+<div class="centre-gal">
+<figure class="cg-tall"><img src="images/real/storefront.jpg" alt="Maa Bhawani Diagnostics building" loading="lazy"/><figcaption>Our Centre, Mandir Road</figcaption></figure>
+<figure><img src="images/real/reception.jpg" alt="Reception desk" loading="lazy"/><figcaption>Reception</figcaption></figure>
+<figure><img src="images/real/collection-counter.jpg" alt="Blood sample collection area" loading="lazy"/><figcaption>Sample Collection</figcaption></figure>
+<figure><img src="images/real/waiting-area.jpg" alt="Patient waiting area" loading="lazy"/><figcaption>Waiting Area</figcaption></figure>
+<figure><img src="images/real/signboard.jpg" alt="Signboard with address and phone numbers" loading="lazy"/><figcaption>Find Us Here</figcaption></figure>
+</div>
+</section>
+
+<section class="sect">
+<h2>Our Certifications</h2>
     <div class="cert-row">
       <div class="cert"><span class="msi msi-xl">workspace_premium</span><div class="ce-t">ISO Certified</div><div class="ce-s">Quality assured</div></div>
       <div class="cert"><span class="msi msi-xl">badge</span><div class="ce-t">Udyam Registered</div><div class="ce-s">Govt. recognised</div></div>
@@ -1053,7 +1071,7 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.25;letter-spac
         </div>
       </div>
       <div class="h-hero-media">
-        <img src="images/contact-reception.jpeg" alt="Maa Bhawani Diagnostics reception"/>
+        <img src="images/real/hero-contact.jpg" alt="Maa Bhawani Diagnostics reception desk"/>
       </div>
     </div>
     <div class="c-help">
